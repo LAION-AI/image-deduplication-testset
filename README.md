@@ -7,7 +7,7 @@ The images of a query & the 12 neighbors are in a folder with the name "1" for t
 
 The downloaded and zipped image folders can be found here: [https://drive.google.com/file/d/1XidNj35sUuDestW39iOyiXk6P03ReQqs/view?usp=sharing](https://drive.google.com/file/d/1d0hxUFr4EAGGJlzzVCpfTy05CgZrrlgW/view?usp=share_link)
 
-Some of the files are missing in the Gdrive zip file, cause trying to download them gave again and again failures. We advise to run all benchmarks on the zip file for consistency. Please make your scripts robuts for the case that some folders () don't contain "query.zip" or that some neighbors are missing in a folder.
+Some of the files are missing in the Gdrive zip file, cause trying to download them gave again and again failures. We advise to run all benchmarks on the zip file for consistency. Please make your scripts robuts for the case that some folders (42, 47, 75, 159) don't contain "query.zip" or that some neighbors are missing in a folder.   
 
 Here can you find visualizations of the samples:
 http://captions.christoph-schuhmann.de/visualizations-of-the-samples.html
