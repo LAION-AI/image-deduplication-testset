@@ -18,3 +18,7 @@ The annotations are in a list of lists, where the first element is e.g. [0,0,1,1
 As duplicates are considered images that show the same content from the same perspective, maybe with some slight crops, unimportant additional texts that don't change the meaning of the image, compression artefacts or slight blur, ... - If the same content is show from a different camera angle, it is not considered a duplicate.
 
 Here is a Colab that benchmarks an ensemble based on CLIP L 14 & ResNet50 features: https://colab.research.google.com/drive/1uVZXaaG7clj_fYkMWTpkn9pp5t29Zm8-?usp=sharing
+
+Results with Image Dedup https://github.com/idealo/imagededup :
+![image](https://user-images.githubusercontent.com/22318853/200182960-bebc9999-191a-4cf0-8d7b-ae207d68cae8.png)
+![image](https://user-images.githubusercontent.com/22318853/200183001-6fc032ad-1f91-449c-b128-b848deef9180.png)
