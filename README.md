@@ -22,5 +22,5 @@ Here is a Colab that benchmarks an ensemble based on CLIP L 14 & ResNet50 featur
 Results with Image Dedup https://github.com/idealo/imagededup :
 
 <img src="https://user-images.githubusercontent.com/22318853/200183001-6fc032ad-1f91-449c-b128-b848deef9180.png" alt="" width="300" >
-CNN (mobilenetv3) with Embedding Similarity Threshold 0.90:
+Various results ( CNN (mobilenetv3) with Embedding Similarity Threshold 0.90 ):
 <img src="https://user-images.githubusercontent.com/22318853/200182960-bebc9999-191a-4cf0-8d7b-ae207d68cae8.png" alt="" width="200" >
