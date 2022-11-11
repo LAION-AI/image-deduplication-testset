@@ -4,7 +4,7 @@ This is a test set for finding duplicates of images.
 It consists of 177 query images and 12 nearest neighbors from our LAION-5B Clip image embedding index.
 The images of a query & the 12 neighbors are in a folder with the name "1" for the first query, "2" for the second query, ... up until "177".
 
-The downloaded and zipped image folders can be found here: https://drive.google.com/file/d/1wfdcenzGKf-XjzJTlLhzCA6rT5haqtAL/view?usp=sharing
+The downloaded and zipped image folders can be found here: https://drive.google.com/file/d/1XidNj35sUuDestW39iOyiXk6P03ReQqs/view?usp=sharing
 
 Here can you find visualizations of the samples:
 http://captions.christoph-schuhmann.de/visualizations-of-the-samples.html
