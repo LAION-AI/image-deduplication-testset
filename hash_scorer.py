@@ -1,5 +1,6 @@
 import os
 import pickle
+from argparse import ArgumentParser
 
 import numpy as np
 from imagededup.methods import CNN, AHash, DHash, PHash, WHash
@@ -11,7 +12,7 @@ from annotations import annotation
 def similar_result(hasher, annotation, max_distance):
     results = []
     gt_labels = []
-    pred_dict = {}
+    pred_labels_dict = {}
     for i in range(1, 178):
         # Encoding
         encodings = hasher.encode_images(image_dir=f"testset/{i}")
@@ -30,63 +31,54 @@ def similar_result(hasher, annotation, max_distance):
                     gt_labels.append(annotation[i - 1][j])
                     if f"{j}.jpg" in duplicates["query.jpg"]:
                         results.append(1)
-                        pred_dict[f"testset/{i}/{j}.jpg"] = 1
+                        pred_labels_dict[f"testset/{i}/{j}.jpg"] = 1
                     else:
                         results.append(0)
-                        pred_dict[f"testset/{i}/{j}.jpg"] = 0
-                    # print(f"testset/{i}/{j}.jpg")
+                        pred_labels_dict[f"testset/{i}/{j}.jpg"] = 0
+
     return (
         confusion_matrix(np.array(gt_labels).flatten(), np.array(results).flatten()),
         accuracy_score(np.array(gt_labels).flatten(), np.array(results).flatten()),
-        pred_dict,
+        pred_labels_dict,
     )
 
 
-res_dict = {}
+def main(model_name: str = "mobilenet_v3_small"):
 
-for i, max_distance in [
-    (CNN, 0.9),
-    (CNN, 0.91),
-    (CNN, 0.92),
-    (PHash, None),
-    (AHash, None),
-    (DHash, None),
-    (WHash, None),
-]:
-    print(i.__name__)
-    if max_distance:
-        model_name = f"{i.__name__}_{max_distance}"
+    if model_name in ['PHash', 'AHash', 'DHash', 'WHash']:
+        run_list = [(eval(model_name), None)]
     else:
-        model_name = f"{i.__name__}"
-    conf_matrix, acc, pred_dict = similar_result(
-        i(verbose=False), annotation, max_distance
+        run_list = [(CNN, i) for i in [0.9, 0.91, 0.92, 0.93, 0.94, 0.95]]
+
+    res_dict = {}
+    for i, max_distance in run_list:
+
+        conf_matrix, acc, pred_dict = similar_result(
+            i(model_name=model_name, verbose=False), annotation, max_distance
+        )
+
+        res_name = f"{i.__name__}_{model_name}_{max_distance}" if max_distance else f"{i.__name__}"
+        res_dict[res_name] = {
+            "pred_dict": pred_dict,
+            "confusion_matrix": conf_matrix,
+            "accuracy": acc,
+        }
+
+        print(res_name)
+        print(f"Accuracy: {res_dict[res_name]['accuracy']}")
+        print("Confusion Matrix:")
+        print(res_dict[res_name]["confusion_matrix"])
+        print("--------------------------------------")
+
+    with open("res_dict.pkl", "wb") as f:
+        pickle.dump(res_dict, f, pickle.HIGHEST_PROTOCOL)
+    f.close()
+
+if __name__ == "__main__":
+    parser = ArgumentParser()
+    parser.add_argument(
+        "-m", "--model", type=str, help='models from TIMM or PHash, AHash, DHash, WHash', default='mobilenet_v3_small'
     )
 
-    res_dict[model_name] = {
-        "pred_dict": pred_dict,
-        "confusion_matrix": conf_matrix,
-        "accuracy": acc
-    }
-
-for i, max_distance in [
-    (CNN, 0.9),
-    (CNN, 0.91),
-    (CNN, 0.92),
-    (PHash, None),
-    (AHash, None),
-    (DHash, None),
-    (WHash, None),
-]:
-    if max_distance:
-        model_name = f"{i.__name__}_{max_distance}"
-    else:
-        model_name = f"{i.__name__}"
-    print(model_name)
-    print(res_dict[model_name]["accuracy"])
-    print(res_dict[model_name]["confusion_matrix"])
-
-with open(f"res_dict.pkl", "wb") as f:
-    pickle.dump(res_dict, f, pickle.HIGHEST_PROTOCOL)
-f.close()
-
-# print(f"Total images {np.sum(final[f'{i.__name__}'])}")
+    args = parser.parse_args()
+    main(args.model)
